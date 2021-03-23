@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OgrenciDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="OgrenciDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="VideoFiles" EntityType="OgrenciDBModel.VideoFiles" />
+    <EntitySet Name="Brands" EntityType="OgrenciDBModel.Brands" />
+    <EntitySet Name="Categories" EntityType="OgrenciDBModel.Categories" />
+    <EntitySet Name="Photos" EntityType="OgrenciDBModel.Photos" />
+    <EntitySet Name="Product" EntityType="OgrenciDBModel.Product" />
+    <AssociationSet Name="FK_Brands_Categories" Association="OgrenciDBModel.FK_Brands_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Brands" EntitySet="Brands" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Brands" Association="OgrenciDBModel.FK_Product_Brands">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Categories" Association="OgrenciDBModel.FK_Product_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="VideoFiles">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ContentType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Brands">
+    <Key>
+      <PropertyRef Name="brand_id" />
+    </Key>
+    <Property Name="brand_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="brand_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="categoriy_id" Type="Int32" />
+    <NavigationProperty Name="Categories" Relationship="OgrenciDBModel.FK_Brands_Categories" FromRole="Brands" ToRole="Categories" />
+    <NavigationProperty Name="Product" Relationship="OgrenciDBModel.FK_Product_Brands" FromRole="Brands" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Brands" Relationship="OgrenciDBModel.FK_Brands_Categories" FromRole="Categories" ToRole="Brands" />
+    <NavigationProperty Name="Product" Relationship="OgrenciDBModel.FK_Product_Categories" FromRole="Categories" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Photos">
+    <Key>
+      <PropertyRef Name="photo_id" />
+    </Key>
+    <Property Name="photo_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="photo_url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="product_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="product_id" />
+    </Key>
+    <Property Name="product_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="product_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="product_price" Type="Int32" />
+    <Property Name="product_describe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="product_photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="product_datetime" Type="DateTime" Precision="0" />
+    <Property Name="product_discount" Type="Int32" />
+    <Property Name="category_id" Type="Int32" />
+    <Property Name="brand_id" Type="Int32" />
+    <NavigationProperty Name="Brands" Relationship="OgrenciDBModel.FK_Product_Brands" FromRole="Product" ToRole="Brands" />
+    <NavigationProperty Name="Categories" Relationship="OgrenciDBModel.FK_Product_Categories" FromRole="Product" ToRole="Categories" />
+  </EntityType>
+  <Association Name="FK_Brands_Categories">
+    <End Type="OgrenciDBModel.Categories" Role="Categories" Multiplicity="0..1" />
+    <End Type="OgrenciDBModel.Brands" Role="Brands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="Brands">
+        <PropertyRef Name="categoriy_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Brands">
+    <End Type="OgrenciDBModel.Brands" Role="Brands" Multiplicity="0..1" />
+    <End Type="OgrenciDBModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="brand_id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="brand_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Categories">
+    <End Type="OgrenciDBModel.Categories" Role="Categories" Multiplicity="0..1" />
+    <End Type="OgrenciDBModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,52 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>JqueryCheckboxFiltre</title>
+    <script src="~/Content/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+    <div class="tags">
+        <label>
+            <input type="checkbox" rel="arts" />
+            Arts
+        </label>
+        <label>
+            <input type="checkbox" rel="computers" />
+            Computers
+        </label>
+        <label>
+            <input type="checkbox" rel="health" />
+            Health
+        </label>
+        <label>
+            <input type="checkbox" rel="video-games" />
+            Video Games
+        </label>
+    </div>
+    <ul class="results">
+        <li class="arts computers">Result 1</li>
+        <li class="video-games">Result 2</li>
+        <li class="computers healt video-games">Result 3</li>
+        <li class="arts video-games">Result 4</li>
+    </ul>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+            $('.results > li').hide();
+
+            $('div.tags').find('input:checkbox').live('click', function () {
+                $('.results > li').hide();
+                $('div.tags').find('input:checked').each(function () {
+                    $('.results > li.' + $(this).attr('rel')).show();
+                });
+            });
+        });      
+</script>
